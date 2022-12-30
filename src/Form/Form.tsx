@@ -8,58 +8,15 @@ interface IValidations {
 
 interface IInput {
     value: string,
-    onChange: object,
-    onBlur: object,
-    clearInput: object,
+    onChange(e: React.ChangeEvent<HTMLInputElement>): void,
+    onBlur(): void,
+    clearInput(): void,
     isVisited: boolean,
     errorText: string,
     isEmpty?: boolean,
     minLengthError?: boolean,
-    mailError?:boolean
-}
-
-const useInput = (initialValue: string, validations: IValidations) => {
-    const [value, setValue] = useState(initialValue)
-    const [isVisited, setVisited] = useState(false)
-    const valid = useValidation(value, validations)
-    const [errorText, setErrorText] = useState('')
-
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value)
-    }
-
-    const onBlur = () => {
-        setVisited(true)
-    }
-
-    const clearInput = () => {
-        setValue('')
-    }
-
-    useEffect(() => {
-        if (isVisited && valid.isEmpty) {
-            setErrorText("Поле не может быть пустым")
-            return
-        } else if (isVisited && valid.minLengthError) {
-            setErrorText("Неккоректная длина")
-            return
-        } else if ( isVisited && valid.mailError) {
-            setErrorText("Укажите корректный email адрес")
-            return
-        } else if (valid.inputValid) {
-            setErrorText("")
-        }
-    }, [value])
-
-    return {
-        value,
-        onChange,
-        onBlur,
-        clearInput,
-        isVisited,
-        errorText,
-        ...valid
-    }
+    mailError?:boolean,
+    inputValid: boolean
 }
 
 const useValidation = (value: string, validations: IValidations): any => {
@@ -67,6 +24,7 @@ const useValidation = (value: string, validations: IValidations): any => {
     const [minLengthError, setMinLengthError] = useState(false)
     const [mailError, setMailError] = useState(false)
     const [inputValid, setInputValid] = useState(false)
+
 
     useEffect(() => {
         for (const validation in validations) {
@@ -99,6 +57,54 @@ const useValidation = (value: string, validations: IValidations): any => {
         inputValid
     }
 }
+
+const useInput = (initialValue: string, validations: IValidations): IInput => {
+    const [value, setValue] = useState(initialValue)
+    const [isVisited, setVisited] = useState(false)
+    const valid = useValidation(value, validations)
+    const [errorText, setErrorText] = useState('')
+
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(e.target.value)
+    }
+
+    const onBlur = () => {
+        setVisited(true)
+    }
+
+    const clearInput = () => {
+        setValue('')
+        setVisited(false)
+    }
+
+    useEffect(() => {
+        if (isVisited && valid.isEmpty) {
+            setErrorText("Поле не может быть пустым")
+            return
+        } else if (isVisited && valid.minLengthError) {
+            setErrorText("Неккоректная длина")
+            return
+        } else if ( isVisited && valid.mailError) {
+            setErrorText("Укажите корректный email адрес")
+            return
+        } else if (isVisited && !valid.isEmpty && !valid.minLengthError && !valid.mailError) {
+            setErrorText("")
+            return
+        }
+    }, [value, isVisited, valid.minLengthError, valid.mailError])
+
+    return {
+        value,
+        onChange,
+        onBlur,
+        clearInput,
+        isVisited,
+        errorText,
+        ...valid
+    }
+}
+
+
 
 const Form: React.FC = () => {
 

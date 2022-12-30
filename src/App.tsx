@@ -15,15 +15,15 @@ const App: React.FC = () => {
               <header>
                   <nav>
                       <ul>
-                          <li className={`${currPage.pathname === '/RD-task' && 'active'}`}><Link to={`/`}>Логин</Link></li>
-                          <li className={`${currPage.pathname === '/RD-task/layout' && 'active'}`}><Link to={`/layout`}>Верстка</Link></li>
+                          <li className={`${currPage.pathname === '/RD-task/2' && 'active'}`}><Link to={`/RD-task/2`}>Логин</Link></li>
+                          <li className={`${currPage.pathname === '/RD-task/1' && 'active'}`}><Link to={`/RD-task/1`}>Верстка</Link></li>
                       </ul>
                   </nav>
               </header>
               <main>
                   <Routes>
-                      <Route path="/RD-task" element={<Form />}/>
-                      <Route path="/RD-task/layout" element={<Layout />}/>
+                      <Route path="/RD-task/2" element={<Form />}/>
+                      <Route path="/RD-task/1" element={<Layout />}/>
                   </Routes>
               </main>
           </div>

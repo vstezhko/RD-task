@@ -18,7 +18,7 @@ body {
   box-sizing: border-box;
 }
 
-li {
+ul li {
   list-style: none;
 }
 
@@ -149,5 +149,34 @@ button:enabled:active {
 
 button:disabled {
   background-color: gray;
+}
+
+
+.Layout {
+  width: 800px;
+  border: 1px solid black;
+}
+
+.layout-wrapper {
+  margin: 20px;
+}
+
+.column {
+  column-count: 2;
+  column-gap: 80px;
+  text-align: left;
+  font-size: 12px;
+  column-rule: solid 1px black;
+  counter-reset: my-counter;
+}
+
+.column p {
+  line-height: 1.5em;
+  margin-bottom: 10px;
+}
+
+.column p.item::before {
+  counter-increment: my-counter;
+  content: counter(my-counter)". ";
 }
 
