@@ -1,4 +1,4 @@
-availible on https://vstezhko.github.io/RD-task/2
+availible on https://vstezhko.github.io/RD-task
 
 
 
